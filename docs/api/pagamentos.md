@@ -130,5 +130,12 @@ Caso o App consumidor desta API tenha finalizado o seu processo de negócio com 
 
 Como resultado, poderemos ter uma inconsistência transacional, visto que, na virada do dia, algumas redes adquirentes confirmam automaticamente as transações que não receberam a perna de confirmação. Outras redes adquirentes trabalham apenas com duas pernas, sem a necessidade de perna de confirmação. Neste caso, se houver algum problema na conclusão da transação no lado do terminal, é imperativo que a solução de captura execute o método **cancelPayment()**, a fim de desfazer a transação no adquirente e evitar cobrança para o cliente Portador do Cartão.
 
+# Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `paymentId` | `String` | Sim | Identificador da transação que será confirmada. O Identificador referido é aquele utilizado na aplicação de pagamentos. |
+| `callback` | `PaymentCallback` | Sim | Interface que será executada para notificações de sucesso ou erro. |
+
 [[Voltar]](./README.md)
 
