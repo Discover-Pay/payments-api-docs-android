@@ -27,3 +27,6 @@ Os aplicativos devem estar instalados no terminal. Entre em contato com a equipe
 | *3. receipt (Comprovante)*              | Impressão
 | *4. acquirer (Adquirente)*              | Integração com as adquirentes
 | *5. client (Loja)*                      | Loja PayStore
+
+
+[[Voltar para o início]](../README.md)
