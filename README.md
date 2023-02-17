@@ -1,6 +1,6 @@
 # Índice
 
-- [Página Inicial](README.md)
+- [Página Inicial](#)
 - [Arquitetura](docs/architecture.md)
 - [Pré-requisitos](docs/prerequisites.md)
 - [Terminais Homologados](docs/pos.md)
