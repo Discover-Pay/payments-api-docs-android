@@ -1,4 +1,4 @@
-# PayStore Android
+# App Pagamentos Android
 Documentação da Integração Android da PayStore
 
 Uma das formas de se integrar com a aplicação de pagamentos da Phoebus é via [**IPC**](https://developer.android.com/guide/components/aidl.html). Para isto, é fornecida uma biblioteca, a payments-api-x.x.x.x.aar, contendo todo o código necessário a ser usado para tais chamadas.
@@ -13,3 +13,19 @@ Para integração com a API de pagamentos, é fornecida a interface PaymentClien
 
 
 ![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/assets/paystore.png)
+
+
+### Início rápido
+Veja os pré-requisitos para iniciar o seu desenvolvimento [*aqui*](docs/prerequisites.md)
+
+### O que esperar?
+* Fácil Integração para realizar pagamentos.
+
+* Exemplos de projetos com tecnologias diferentes realizando a integração.
+
+* Customizações de layouts da sua empresa e marca nas telas e comprovantes dos terminais.
+
+### Aplicações de Exemplo
+#### App Demo Android
+
+Para facilitar sua integração, criamos um projeto [**demo**](https://developer.android.com/guide/components/aidl.html) desenvolvido em Android já integrado com app Pagamentos. Explore esse projeto para visualizar a integração em ação.
