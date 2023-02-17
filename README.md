@@ -12,4 +12,4 @@ A seguir, temos a especificação detalhada das operações disponíveis.
 Para integração com a API de pagamentos, é fornecida a interface PaymentClient presente na biblioteca.
 
 
-![Default](https://github.com/mendonca-andre/Charts.WPF/blob/master/assets/paystore.png)
+![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/assets/paystore.png)
