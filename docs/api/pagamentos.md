@@ -196,7 +196,7 @@ Além dos métodos para resolução de pagamentos (confirmPayment e cancelPaymen
 | `transactionConfirmation` | `String` | Sim | Ação a ser tomada. Permite os valores `CONFIRM` (Confirma a transação) ou `UNDO` (Desfaz a transação). |
 
 
-```csharp
+```java
 {
     "confirmationTime": "10",
     "transactionConfirmation": "CONFIRM"
@@ -204,7 +204,7 @@ Além dos métodos para resolução de pagamentos (confirmPayment e cancelPaymen
 
 ```
 #### EXEMPLO DO FLUXO DE PAGAMENTO
-```csharp
+```java
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -357,7 +357,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 }
 ```
-
 
 [[Voltar]](./README.md)
 
