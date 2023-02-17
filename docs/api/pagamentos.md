@@ -1,4 +1,4 @@
-# Integração com Pagamentos V2
+# Integração com Pagamentos V2 
 
 
 ma das formas de se integrar com a aplicação de pagamentos da Phoebus é via [**IPC**]. Para isto, é fornecida uma biblioteca, a  [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars), contendo todo o código necessário a ser usado para tais chamadas.
@@ -23,7 +23,7 @@ Passos | Sucesso | Erro
 **5.Solicitação de desfazimento** | Desfazimento realizado, seu status é Desfeita. Não pode ser confirmada. | A resposta contém informações do erro da solicitação. O status continua Pendente. | [optional] 
 **6.Resposta do desfazimento** | A resposta contém informações do desfazimento realizado.** | A resposta contém informações do erro da solicitação. | [optional] 
 
+O pagamento só é finalizado quando existe uma confirmação ou um cancelamento (desfazimento). Em caso de confirmação, o comprovante estará disponível para impressão ou envio por SMS/e-mail, dependendo das funcionalidades do terminal
 
 [[Voltar]](./README.md)
 
-O pagamento só é finalizado quando existe uma confirmação ou um cancelamento (desfazimento). Em caso de confirmação, o comprovante estará disponível para impressão ou envio por SMS/e-mail, dependendo das funcionalidades do terminal
