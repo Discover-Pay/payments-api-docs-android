@@ -69,6 +69,50 @@ Nome | Tipo | Obrigatório | Descrição
 | `operationMethodAllowed` | `Integer` | Sim | Indica o método de operação de pagamento, anulação e devolução. Admita os seguintes valores: 0 - Apenas com cartão físico (lido ou digitado); 1 - Somente com QRCode. |
 | `allowBenefit` (OBSOLETO) | `Boolean` | Não | Indica se o QRCode deve ser gerado com as opções do produto associadas aos benefícios. O valor padrão é 'verdadeiro', ou seja, os benefícios serão adicionados. |
 
+# callback (PaymentCallback)
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| **`onSuccess`** |     |     | Método para notificação em caso de sucesso |
+| `Payment.value` | `BigDecimal` | Sim | Valor do pagamento. Este é o valor que foi aprovado pela adquirente. Deve ser validado sempre na resposta, ainda que tenha sido passado como parâmetro, pois há adquirentes que, para algumas situações, aprovam valores diferentes dos solicitados. |
+| `Payment.additionalValueType` | `AdditionalValueType` | Não | Presente apenas quando existe um valor adicional no contexto da transação executada. |
+| `Payment.additionalValue` | `BigDecimal` | Não | Presente apenas quando existe um valor adicional no contexto da transação executada. |
+| `Payment.paymentType` | `PaymentType` | Sim | Tipo de pagamento (Débito, Crédito, Voucher, etc.). |
+| `Payment.installments` | `Integer` | Não | Quantidade de parcelas do pagamento. |
+| `Payment.accountTypeId` | `String` | Não | Presente apenas quando existe um tipo de conta no contexto da transação executada. |
+| `Payment.planId` | `String` | Não | Presente apenas quando existe um plano no contexto da transação executada. |
+| `Payment.productShortName` | `String` | Sim | Corresponde ao productShortName correspondente ao produto principal no contexto da transação. |
+| `Payment.ticketNumber` | `String` | Não | ticketNumber gerado pelo terminal para a transação. |
+| `Payment.batchNumber` | `String` | Sim | Número de lote. |
+| `Payment.nsuTerminal` | `String` | Sim | NSU gerado pelo terminal para a transação. |
+| `Payment.acquirer` | `String` | Sim | Adquirente que autorizou o pagamento. |
+| `Payment.paymentId` | `String` | Sim | Identificador da transação para a aplicação de pagamentos. Esta é a informação a ser usada para a confirmação e desfazimento. |
+| `Payment.brand` | `String` | Sim | Bandeira do cartão. |
+| `Payment.bin` | `String` | Sim | BIN do cartão. |
+| `Payment.panLast4Digits` | `String` | Sim | Últimos 4 dígitos do PAN do cartão. |
+| `Payment.captureType` | `CaptureType` | Sim | Forma de captura do cartão. |
+| `Payment.paymentStatus` | `PaymentStatus` | Sim | Situação do pagamento. No caso de solicitações retornadas com sucesso, esta informação sempre será _PENDING_, requerendo uma confirmação ou desfazimento para a sua conclusão definitiva. |
+| `Payment.paymentDate` | `Date` | Sim | Data/hora do pagamento para a aplicação de pagamentos. |
+| `Payment.acquirerId` | `String` | Sim | Identificador da transação para a adquirente. Este é o identificador que consta no arquivo que a adquirente fornece (EDI). Desta forma,é possível realizar a conciliação do pagamento com a transação integrada. |
+| `Payment.acquirerResponseCode` | `String` | Sim | Código de resposta da adquirente. |
+| `Payment.acquirerResponseDate` | `String` | Sim | Data/hora retornada pela adquirente. |
+| `Payment.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação |
+| `Payment.acquirerAuthorizationNumber` | `String` | Sim | Número da autorização fornecido pela adquirente (consta no comprovante do cliente Portador do Cartão). |
+| `Payment.Receipt.clientVia` | `String` | Não | Conteúdo do comprovante - via do cliente. |
+| `Payment.Receipt.merchantVia` | `String` | Não | Conteúdo do comprovante - via do estabelecimento. |
+| `Payment.cardToken` | `String` | Não | Token do cartão utilizado na transação. |
+| `Payment.cardholderName` | `String` | Não | Nome do portador do cartão. |
+| `Payment.terminalId` | `String` | Sim | Identificação do terminal. |
+| `Payment.note` | `String` | Sim | Valor adicional que é inserido como Nota. (pode ser o número da fatura) Este campo só virá na resposta caso tenha sido preenchido na requisição do pagamento pela api; Caso seja capturado pelo comprovante, não é possível retornar, pois como o comprovante é exibido depois da confirmação, nessa altura a resposta do pagamento já tem sido enviada para o app. |
+| `Payment.dni` | `String` | Sim | Número do Documento. Este campo só virá na resposta caso tenha sido preenchido na requisição do pagamento pela api; Caso seja capturado pelo comprovante, não é possível retornar, pois como o comprovante é exibido depois da confirmação, nessa altura a resposta do pagamento já tem sido enviada para o app. |
+| `Payment.qrId` | `String` | Não | Identificador QrCode gerado pelo terminal de captura. |
+| `Payment.originalValue` | `BigDecimal` | Não | Valor orginal da venda. Presente em pagamentos com QRCode, cujo beneficio foi aplicado ao valor da venda. |
+| **`onError`** |     |     | Método para notificação em caso de erro. |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](../codigo_resposta/) |
+| `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
+| `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
+| `ErrorData.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
+
 
 [[Voltar]](./README.md)
 
