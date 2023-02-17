@@ -184,6 +184,180 @@ Caso o App consumidor desta API não tenha finalizado o seu processo de negócio
 | `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
 | `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. 
 
+### Campo adicional api_pending
+
+Além dos métodos para resolução de pagamentos (confirmPayment e cancelPayment), há a possibilidade de se configurar um **campo adicional** no Portal Paystore para realizar esta resolução automaticamente, em determinado tempo. Para isto, deve ser criado um campo adicional no Portal Paystore com o tipo JSON e a chave api_pending.
+
+### Valor do campo
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `confirmationTime` | `String` | Sim | Intervalo, em minutos, para resolução das pendências. |
+| `transactionConfirmation` | `String` | Sim | Ação a ser tomada. Permite os valores `CONFIRM` (Confirma a transação) ou `UNDO` (Desfaz a transação). |
+
+
+```csharp
+{
+    "confirmationTime": "10",
+    "transactionConfirmation": "CONFIRM"
+}
+
+```
+#### EXEMPLO DO FLUXO DE PAGAMENTO
+```csharp
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.math.BigDecimal;
+
+import br.com.phoebus.android.payments.api.ApplicationInfo;
+import br.com.phoebus.android.payments.api.Credentials;
+import br.com.phoebus.android.payments.api.ErrorData;
+import br.com.phoebus.android.payments.api.PaymentClient;
+import br.com.phoebus.android.payments.api.PaymentRequestV2;
+import br.com.phoebus.android.payments.api.PaymentV2;
+import br.com.phoebus.android.payments.api.exception.ClientException;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, PaymentClient.PaymentCallback<PaymentV2> {
+
+    Button bt_start;
+    private PaymentClient paymentClient;
+    public static final String TEST_APPLICATION_ID = "0";
+    public static final String TEST_SECRET_TOKEN = "000000000000000000000000";
+    public static final String TAG = "TAG_DEMO";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        bt_start = (Button) this.findViewById(R.id.button);
+        bt_start.setOnClickListener(this);
+        paymentClient = new PaymentClient();
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        doExecute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        paymentClient.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            paymentClient.unbind(this);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        super.onDestroy();
+    }
+
+    public void doExecute(){
+        PaymentRequestV2 request = new PaymentRequestV2();
+        request.setValue(new BigDecimal(50));
+        request.setAppTransactionId("123456");
+
+        Credentials credentials = new Credentials();
+        credentials.setApplicationId(TEST_APPLICATION_ID);
+        credentials.setSecretToken(TEST_SECRET_TOKEN);
+
+        ApplicationInfo applicationInfo = new ApplicationInfo();
+        applicationInfo.setCredentials(credentials);
+        applicationInfo.setSoftwareVersion("1.0");
+
+        request.setAppInfo(applicationInfo);
+
+        try {
+            paymentClient.startPaymentV2(request, this);
+        } catch (ClientException e) {
+            Log.e(TAG, "Error starting payment", e);
+        }
+    }
+
+
+    @Override
+    public void onSuccess(PaymentV2 paymentV2) {
+        Log.i(TAG, paymentV2.toString());
+
+        doConfirmPayment(paymentV2);
+        /*
+          Se, na sua regra de negócio, for preciso desfazer a transação por algum motivo,
+          chame o método doCancelPayment(paymentV2)
+        **/
+    }
+
+    @Override
+    public void onError(ErrorData errorData) {
+        Log.e(TAG, errorData.getResponseMessage());
+        Toast.makeText(this, errorData.getResponseMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    private void doConfirmPayment(PaymentV2 paymentV2) {
+        try {
+            paymentClient.confirmPayment(paymentV2.getPaymentId(),
+                    new PaymentClient.PaymentCallback<PaymentV2>() {
+
+                        @Override
+                        public void onError(ErrorData errorData) {
+                            Log.e(TAG, errorData.getResponseMessage());
+                            Toast.makeText(MainActivity.this, errorData.getResponseMessage(), Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onSuccess(PaymentV2 payment) {
+                            Log.i(TAG, payment.toString());
+                        }
+
+
+                    });
+        } catch (ClientException e) {
+            Log.e(TAG, "Error confirmPayment", e);
+        }
+
+    }
+
+    private void doCancelPayment(PaymentV2 paymentV2) {
+        try {
+            paymentClient.cancelPayment(paymentV2.getPaymentId(),
+                    new PaymentClient.PaymentCallback<PaymentV2>() {
+
+                        @Override
+                        public void onError(ErrorData errorData) {
+                            Log.e(TAG, errorData.getResponseMessage());
+                            Toast.makeText(MainActivity.this, errorData.getResponseMessage(), Toast.LENGTH_LONG).show();
+
+                        }
+
+                        @Override
+                        public void onSuccess(PaymentV2 payment) {
+                            Log.i(TAG, payment.toString());
+                        }
+
+
+                    });
+        } catch (ClientException e) {
+            Log.e(TAG, "Error cancelPayment", e);
+        }
+
+    }
+
+
+}
+```
+
 
 [[Voltar]](./README.md)
 
