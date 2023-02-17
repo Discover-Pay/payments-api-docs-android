@@ -149,7 +149,7 @@ Como resultado, poderemos ter uma inconsistência transacional, visto que, na vi
 | `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
 
 
-#### cancelPayment()
+## cancelPayment()
 
 Este método deve ser sempre chamado para desfazer uma transação que o terminal não conseguiu processar completamente a perna de autorização enviada pelo Autorizador.
 
