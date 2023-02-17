@@ -10,4 +10,4 @@ A Plataforma Android da PayStore é composta por várias aplicações Android co
 
 ![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/assets/architecture.png)
 
-[[Voltar]](../README.md)
+[[Voltar para o início]](../README.md)
