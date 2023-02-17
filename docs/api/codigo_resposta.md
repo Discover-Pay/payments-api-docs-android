@@ -26,3 +26,6 @@
 | 22  | Operação não permitida. | Todas |
 | 24  | Transação com QRCode está pendente | `startPayment`, `startPaymentV2`, `reversePayment` e `reversePaymentV2` |
 | 99  | ERRO INTERNO. | Todas |
+
+
+[[Voltar]](./README.md)
