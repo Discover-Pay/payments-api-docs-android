@@ -9,3 +9,6 @@ public static final String TEST_SECRET_TOKEN = "000000000000000000000000";
 ```
 
 A classe [**CredentialsUtils.java**](https://github.com/Discover-Pay/payments-api-demo-android) presente no projeto [**demo**](https://github.com/Discover-Pay/payments-api-demo-android) mostra uma forma de implementar as credenciais que serão usadas no request do pagamento através da classe PaymentRequestV2.java que está presente na lib de integração [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars). Para mais detalhes, veja o projeto demo.
+
+
+[[Voltar]](./README.md)
