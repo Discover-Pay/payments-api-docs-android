@@ -1,4 +1,10 @@
-# App Pagamentos Android
+# Índice
+
+- [Página Inicial](README.md)
+- [Arquitetura](docs/architecture.md)
+- [Terminais Homologados](docs/pos.md)
+
+## App Pagamentos Android
 Documentação da Integração Android do App Pagamentos
 
 Uma das formas de se integrar com a aplicação de pagamentos da Phoebus é via [**IPC**](https://developer.android.com/guide/components/aidl.html). Para isto, é fornecida uma biblioteca, a [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars), contendo todo o código necessário a ser usado para tais chamadas.
