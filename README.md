@@ -28,4 +28,4 @@ Veja os pré-requisitos para iniciar o seu desenvolvimento [*aqui*](docs/prerequ
 ### Aplicações de Exemplo
 #### App Demo Android
 
-Para facilitar sua integração, criamos um projeto [**demo**](https://github.com/Discover-Pay/payments-api-demo/blob/main/README.md) desenvolvido em Android já integrado com app Pagamentos. Explore esse projeto para visualizar a integração em ação.
+Para facilitar sua integração, criamos um projeto [**demo**](https://github.com/Discover-Pay/payments-api-demo-android/blob/main/README.md) desenvolvido em Android já integrado com app Pagamentos. Explore esse projeto para visualizar a integração em ação.
