@@ -2,8 +2,9 @@
 
 - [Página Inicial](README.md)
 - [Arquitetura](docs/architecture.md)
+- [Pré-requisitos](docs/prerequisites.md)
 - [Terminais Homologados](docs/pos.md)
-
+- [Referências API](docs/api/README.md)
 ## App Pagamentos Android
 Documentação da Integração Android do App Pagamentos
 
