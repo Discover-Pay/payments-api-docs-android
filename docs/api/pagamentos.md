@@ -43,7 +43,7 @@ Nome | Tipo | Obrigatório | Descrição
 **callback** |PaymentCallback|Sim|Interface que será executada para notificações de sucesso ou erro do processo de pagamento.
 
 ### Detalhe dos Parâmetros
-request (PaymentRequestV2)
+#### request (PaymentRequestV2)
 
 | Nome | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
