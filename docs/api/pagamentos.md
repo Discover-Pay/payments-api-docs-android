@@ -108,7 +108,7 @@ Nome | Tipo | Obrigatório | Descrição
 | `Payment.qrId` | `String` | Não | Identificador QrCode gerado pelo terminal de captura. |
 | `Payment.originalValue` | `BigDecimal` | Não | Valor orginal da venda. Presente em pagamentos com QRCode, cujo beneficio foi aplicado ao valor da venda. |
 | **`onError`** |     |     | Método para notificação em caso de erro. |
-| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](./codigo_resposta/) |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](./codigo_resposta.md) |
 | `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
 | `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
 | `ErrorData.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
