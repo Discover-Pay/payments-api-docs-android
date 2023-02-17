@@ -153,17 +153,17 @@ Como resultado, poderemos ter uma inconsistência transacional, visto que, na vi
 
 Este método deve ser sempre chamado para desfazer uma transação que o terminal não conseguiu processar completamente a perna de autorização enviada pelo Autorizador.
 
-Este método não deve ser chamado para uma transação já confirmada, ou seja, em que já se executou o método confirmPayment() anteriormente.
+Este método não deve ser chamado para uma transação já confirmada, ou seja, em que já se executou o método **confirmPayment()** anteriormente.
 
-Este método não deve ser chamado para desfazer uma transação já desfeita, ou seja, em que já se executou o método cancelPayment() anteriormente
+Este método não deve ser chamado para desfazer uma transação já desfeita, ou seja, em que já se executou o método **cancelPayment()** anteriormente
 
 Este método não deve ser chamado para uma transação que foi negada pelo Autorizador.
 
 Este método não é um estorno. O estorno é a operação executada pelo menu CANCELAMENTO do terminal. O estorno é executado em transações que foram concluídas com êxito, ou seja, foram confirmadas.
 
-Após a execução do desfazimento, cancelPayment(), a transação não poderá ser mais confirmada pela aplicação do terminal, ou seja, não se pode mais executar o método confirmPayment().
+Após a execução do desfazimento, **cancelPayment()**, a transação não poderá ser mais confirmada pela aplicação do terminal, ou seja, não se pode mais executar o método **confirmPayment()**.
 
-Caso o App consumidor desta API não tenha finalizado o seu processo de negócio com êxito, é imprescindível a chamada do método cancelPayment(). A consequência de não cancelar uma transação que não teve seu processo de negócio concluído é semelhante à consequência de não confirmar. Porém, nesse caso, com um agravante, pois provavelmente o cliente não levará o produto/serviço associado à transação financeira, ou uma nova tentativa de venda poderá ser feita, resultando em uma cobrança em duplicidade para o cliente Portador do Cartão.
+Caso o App consumidor desta API não tenha finalizado o seu processo de negócio com êxito, é imprescindível a chamada do método **cancelPayment()**. A consequência de não cancelar uma transação que não teve seu processo de negócio concluído é semelhante à consequência de não confirmar. Porém, nesse caso, com um agravante, pois provavelmente o cliente não levará o produto/serviço associado à transação financeira, ou uma nova tentativa de venda poderá ser feita, resultando em uma cobrança em duplicidade para o cliente Portador do Cartão.
 
 [[Voltar]](./README.md)
 
