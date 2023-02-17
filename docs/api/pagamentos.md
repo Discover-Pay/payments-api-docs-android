@@ -24,4 +24,6 @@ Passos | Sucesso | Erro
 **6.Resposta do desfazimento** | A resposta contém informações do desfazimento realizado.** | A resposta contém informações do erro da solicitação. | [optional] 
 
 
+[[Voltar]](./README.md)
+
 O pagamento só é finalizado quando existe uma confirmação ou um cancelamento (desfazimento). Em caso de confirmação, o comprovante estará disponível para impressão ou envio por SMS/e-mail, dependendo das funcionalidades do terminal
