@@ -9,3 +9,5 @@ A Plataforma Android da PayStore é composta por várias aplicações Android co
 #### A figura abaixo ilustra de forma macro a arquitetura da plataforma PayStore em cima dos terminais SmartPOS com sistema operacional Android:
 
 ![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/assets/architecture.png)
+
+[[Voltar]](../README.md)
