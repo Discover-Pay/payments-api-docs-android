@@ -1,7 +1,7 @@
 ## Referências API
 
 - [Credenciais](credenciais.md)
-- [Pagamento](Docs/AboutEntity.md)
+- [Pagamento](pagamentos.md)
 - [Estorno](Docs/AccessConfigurationDTO.md)
 - [Consulta](Docs/AccessConfigurationEntity.md)
 - [Broadcast](Docs/AccessPolicyDTO.md)
