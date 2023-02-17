@@ -14,4 +14,16 @@ Para integração com a API de pagamentos, é fornecida a interface **PaymentCli
 ## Fluxo de Estorno
 
 
-![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/docs/api/assets/fluxo_extorno.png)
+![Default](https://github.com/Discover-Pay/payments-api-docs-android/blob/main/docs/api/assets/fluxo_estorno.png)
+
+| Passos | Sucesso | Erro |
+| --- | --- | --- |
+| 1.Solicitação de estorno do pagamento | O estorno do pagamento foi realizado e seu status é `Estornado` | O estorno do pagamento não foi realizado. A resposta contém informações do erro. |
+| 2.Resposta solicitação de estorno do pagamento | A resposta contém informações do estorno do pagamento realizado. | A resposta contém informações do erro da solicitação. |
+| 3.Solicitação de desfazimento do estorno | Desfazimento realizado, seu status é `Desfeita`. | A resposta contém informações do erro da solicitação. |
+| 4.Resposta do desfazimento do estorno | A resposta contém informações do desfazimento realizado. | A resposta contém informações do erro da solicitação. |
+
+
+O estorno só é finalizado quando existe uma confirmação ou um desfazimento. Em caso de confirmação, o comprovante será impresso.
+
+> :warning: O método PaymentClient.Bind(_callback) deve ser chamado, obrigatoriamente, antes de chamar qualquer método da Integração de Pagamento. O **bind é assíncrono**, ou seja, a próxima linha após o bind() será executada antes de receber a sua resposta, por isso garanta que, antes de chamar os métodos de integração, o bind esteja **conectado**.
