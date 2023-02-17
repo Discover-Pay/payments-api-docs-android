@@ -165,5 +165,23 @@ Após a execução do desfazimento, **cancelPayment()**, a transação não pode
 
 Caso o App consumidor desta API não tenha finalizado o seu processo de negócio com êxito, é imprescindível a chamada do método **cancelPayment()**. A consequência de não cancelar uma transação que não teve seu processo de negócio concluído é semelhante à consequência de não confirmar. Porém, nesse caso, com um agravante, pois provavelmente o cliente não levará o produto/serviço associado à transação financeira, ou uma nova tentativa de venda poderá ser feita, resultando em uma cobrança em duplicidade para o cliente Portador do Cartão.
 
+## Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `paymentId` | `String` | Sim | Identificador da transação que será desfeita. O Identificador referido é aquele utilizado na aplicação de pagamentos. |
+| `callback` | `PaymentCallback` | Sim | Interface que será executada para notificações de sucesso ou erro. |
+
+## Detalhe dos parâmetros
+
+#### callback
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| **`onSuccess`** |     |     | Método para notificação em caso de sucesso. |
+| **`onError`** |     |     | Método para notificação em caso de erro. |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](../codigo_resposta/) |
+| `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
+| `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
 [[Voltar]](./README.md)
 
