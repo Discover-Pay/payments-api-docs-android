@@ -114,5 +114,21 @@ Nome | Tipo | Obrigatório | Descrição
 | `ErrorData.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
 
 
+# confirmPayment()
+
+Este método deve ser chamado para confirmar uma transação que o terminal conseguiu processar completamente a perna de autorização enviada pelo Autorizador.
+
+Este método **não** deve ser chamado para uma transação já confirmada, ou seja, em que já se executou o método **confirmPayment()** anteriormente.
+
+Este método **não** deve ser chamado para uma transação já desfeita, ou seja, em que já se executou o método **cancelPayment()** anteriormente.
+
+Este método **não** deve ser chamado para uma transação que foi negada pelo Autorizador, ou seja, a transação precisa ter sido autorizada pelo Autorizador.
+
+Após a execução desta confirmação, a transação só poderá ser cancelada através de uma operação de estorno (o estorno é a operação executada pelo menu CANCELAMENTO do terminal).
+
+Caso o App consumidor desta API tenha finalizado o seu processo de negócio com êxito, porém não tenha chamado o método **confirmPayment()**, a transação permanecerá com o seguinte status: Situação PayStore = "Pendente". Resolução no Adquirente = "Pendente".
+
+Como resultado, poderemos ter uma inconsistência transacional, visto que, na virada do dia, algumas redes adquirentes confirmam automaticamente as transações que não receberam a perna de confirmação. Outras redes adquirentes trabalham apenas com duas pernas, sem a necessidade de perna de confirmação. Neste caso, se houver algum problema na conclusão da transação no lado do terminal, é imperativo que a solução de captura execute o método **cancelPayment()**, a fim de desfazer a transação no adquirente e evitar cobrança para o cliente Portador do Cartão.
+
 [[Voltar]](./README.md)
 
