@@ -67,3 +67,184 @@ Também a depender do comportamento de cada adquirente, é possível que não ha
 | `printMerchantReceipt` | `Boolean` | Não | Indica se o comprovante do estabelecimento deve ser impresso ou não. O valor padrão é _false_, isto é, o comprovante não é impresso. |
 | `printCustomerReceipt` | `Boolean` | Não | Indica se o comprovante do cliente deve ser impresso ou não. O valor padrão é _false_, isto é, o comprovante não é impresso. |
 
+
+#### callback (ReversePaymentCallback)
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| **`onSuccess`** |     |     | Método para notificação em caso de sucesso |
+| `ReversePayment.paymentId` | `String` | Sim | Identificador da transação de estorno. O Identificador referido é aquele utilizado na aplicação de pagamentos. Esta é a informação a ser usada para a confirmação e desfazimento. |
+| `ReversePayment.acquirerId` | `String` | Sim | Identificador da transação de estorno para a adquirente. Este é o identificador que consta no arquivo que a adquirente fornece (EDI). Desta forma, é possível realizar, a conciliação do estorno com a transação integrada. |
+| `ReversePayment.cancelable` | `Boolean` | Sim | _True_, caso esta transação possa ser desfeita; _False_, caso contrário. |
+| `ReversePayment.acquirerResponseCode` | `String` | Sim | Código de resposta da adquirente. |
+| `ReversePayment.acquirerResponseDate` | `String` | Sim | Data/hora retornada pela adquirente. |
+| `ReversePayment.acquirerAuthorizationNumber` | `String` | Sim | Número da autorização fornecido pela adquirente (consta no comprovante do cliente Portador do Cartão). |
+| `ReversePayment.Receipt.clientVia` | `String` | Não | Conteúdo do comprovante - via do cliente. |
+| `ReversePayment.Receipt.merchantVia` | `String` | Não | Conteúdo do comprovante - via do estabelecimento. |
+| `ReversePayment.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
+| `ReversePayment.ticketNumber` | `String` | Não | Número do cupom gerado pelo terminal para a transação. |
+| `ReversePayment.batchNumber` | `String` | Sim | Número do Lote. |
+| `ReversePayment.nsuTerminal` | `String` | Sim | NSU gerado pelo terminal para a transação. |
+| `ReversePayment.cardholderName` | `String` | Não | Nome do portador do cartão. |
+| `ReversePayment.cardBin` | `String` | Sim | Seis primeiros dígitos do cartão. |
+| `ReversePayment.panLast4Digits` | `String` | Sim | Quatro últimos dígitos do cartão. |
+| `ReversePayment.terminalId` | `String` | Sim | Identificação do terminal. |
+| **`onError`** |     |     | Método para notificação em caso de erro. |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](./codigo_resposta.md) |
+| `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
+| `ErrorData.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
+| `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
+
+
+## cancelReversePayment()
+Este método deve ser chamado para desfazer uma transação de estorno anteriormente autorizada. Esta transação deve não ter sido desfeita ainda e deve ter sido autorizada (não negada) previamente.
+
+Como dito na descrição de **reversePayment()**, é possível que não haja desfazimento para a transação de estorno para uma determinada adquirente. Assim, o método **cancelReversePayment()** pode retornar um erro específico informando que não é possível executar tal operação (vide Códigos de Resposta).
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `paymentId` | `String` | Sim | Identificador da transação que será desfeita. O Identificador referido é aquele utilizado na aplicação de pagamentos. |
+| `callback` | `PaymentCallback` | Sim | Interface que será executada para notificações de sucesso ou erro. |
+
+## Detalhe dos parâmetros
+
+### callback
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| **`onSuccess`** |     |     | Método para notificação em caso de sucesso |
+| **`onError`** |     |     | Método para notificação em caso de erro. |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](../codigo_resposta/) |
+| `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
+| `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
+
+### Exemplo do fluxo de Estorno
+
+```java
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+
+import java.math.BigDecimal;
+
+import br.com.phoebus.android.payments.api.Credentials;
+import br.com.phoebus.android.payments.api.ErrorData;
+import br.com.phoebus.android.payments.api.PaymentClient;
+import br.com.phoebus.android.payments.api.ReversePayment;
+import br.com.phoebus.android.payments.api.ReversePaymentRequestV2;
+import br.com.phoebus.android.payments.api.exception.ClientException;
+
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, PaymentClient.PaymentCallback<ReversePayment> {
+
+    Button bt_start;
+    private PaymentClient paymentClient;
+    public static final String TEST_APPLICATION_ID = "0";
+    public static final String TEST_SECRET_TOKEN = "000000000000000000000000";
+    public static final String TAG = "TAG_DEMO";
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        bt_start = (Button) this.findViewById(R.id.button);
+        bt_start.setOnClickListener(this);
+        paymentClient = new PaymentClient();
+
+    }
+
+
+    @Override
+    public void onClick(View view) {
+        doExecute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        paymentClient.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        try {
+            paymentClient.unbind(this);
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+        super.onDestroy();
+    }
+
+    public void doExecute(){
+        ReversePaymentRequestV2 request = new ReversePaymentRequestV2();
+        request.setValue(new BigDecimal(50));
+        request.setAppTransactionId("123456");
+
+        request.setPaymentId("999999");
+        request.setPrintCustomerReceipt(true);
+        request.setPrintMerchantReceipt(true);
+
+        Credentials credentials = new Credentials();
+        credentials.setApplicationId(TEST_APPLICATION_ID);
+        credentials.setSecretToken(TEST_SECRET_TOKEN);
+
+        request.setCredentials(credentials);
+
+        try {
+            paymentClient.reversePaymentV2(request, this);
+        } catch (ClientException e) {
+            Log.e(TAG, "Error reversePaymentV2", e);
+        }
+    }
+
+
+    @Override
+    public void onSuccess(ReversePayment  reversePayment) {
+        Log.i(TAG, reversePayment.toString());
+
+        /*
+          Se, na sua regra de negócio, for preciso desfazer a
+          transação por algum motivo, chame o método
+          cancelReversePayment()
+        **/
+        //doCancelReversePayment(reversePayment);
+
+    }
+
+    @Override
+    public void onError(ErrorData errorData) {
+        Log.e(TAG, errorData.getResponseMessage());
+        Toast.makeText(this, errorData.getResponseMessage(), Toast.LENGTH_LONG).show();
+    }
+
+    private void doCancelReversePayment(ReversePayment reversePayment) {
+        try {
+            paymentClient.cancelReversePayment(reversePayment.getPaymentId(),
+                    new PaymentClient.PaymentCallback<ReversePayment>() {
+
+                        @Override
+                        public void onError(ErrorData errorData) {
+                            Log.e(TAG, errorData.getResponseMessage());
+                            Toast.makeText(MainActivity.this, errorData.getResponseMessage(), Toast.LENGTH_LONG).show();
+                        }
+
+                        @Override
+                        public void onSuccess(ReversePayment reversePayment) {
+                            Log.i(TAG, reversePayment.toString());
+                        }
+
+
+                    });
+        } catch (ClientException e) {
+            Log.e(TAG, "Error cancelReversePayment", e);
+        }
+    }
+}
+```
+
