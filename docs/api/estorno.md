@@ -34,3 +34,36 @@ O estorno só é finalizado quando existe uma confirmação ou um desfazimento. 
 | --- | --- |
 | [`void reversePaymentV2(ReversePaymentRequestV2 paymentRequest, PaymentCallback paymentCallback)`](#reversepaymentV2) | Realiza o processo de estorno de pagamento. |
 | [`void cancelReversePayment(String paymentId, PaymentCallback paymentCallback)`](#cancelReversepayment) | Desfaz uma solicitação de estorno de pagamento. |
+
+
+## reversePaymentV2()
+Este método deve ser chamado quando se deseja fazer uma solicitação de estorno de pagamento. Durante sua execução, os dados do estorno serão validados, informações adicionais serão solicitadas ao operador (e.g. cartão) e a autorização junto à adquirente será feita.
+
+**Note que a transação de estorno não possui confirmação, mas apenas desfazimento. Assim, a confirmação ocorrerá naturalmente com o não envio do desfazimento**, a depender do comportamento de cada adquirente. Caso haja impressão do comprovante do estorno, quando for passado algum dos parâmetros printMerchantReceipt ou printCustomerReceipt com valor true, o estorno será confirmado automaticamente. Neste caso, o desfazimento não será permitido.
+
+Também a depender do comportamento de cada adquirente, é possível que não haja desfazimento para a transação de estorno. Neste caso, estornos aprovados retornarão o valor false no campo "ReversePayment.cancelable". Além disto, caso seja chamado o método cancelReversePayment(), um erro específico será retornado informando que não é possível executar tal operação vide [Códigos de Resposta](./codigo_resposta.md).
+
+
+### Parâmetros
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `request` | `ReversePaymentRequestV2` | Sim | Objeto de transferência de dados que conterá as informações da requisição do estorno do pagamento. Note que nem todos os parâmetros são obrigatórios. |
+| `callback` | `ReversePaymentCallback` | Sim | Interface que será executada para notificações de sucesso ou erro do processo de estorno. |
+
+
+### Detalhe dos parâmetros
+
+#### request (ReversePaymentRequestV2)
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| `value` | `BigDecimal` | Não | Valor da transação a ser estornada. Caso não seja preenchido (null), a interface solicitará o valor ao operador. Esta informação é utilizada para validar a integridade da transação que está sendo estornada. |
+| `paymentId` | `String` | Sim | Identificador da transação que será estornada. O identificador referido é aquele utilizado na aplicação de pagamentos. |
+| `appTransactionId` | `String` | Sim | Identificador da transação integrada. O identificador referidoé o da aplicação que originou a solicitação de estorno. Deve ser o mesmo valor enviado na transação de pagamento. |
+| `ApplicationInfo.credentials` | `Credentials` | Sim | Credenciais da aplicação que está solicitando a operação, conforme cadastro na PayStore. Basicamente, trata-se da identificação da aplicação e o token de acesso. |
+| `ApplicationInfo.softwareVersion` | `String` | Sim | Versão da aplicação que está solicitando o pagamento. |
+| `showReceiptView` (DEPRECATED) | `Boolean` | Não | A Solução irá utilizar o valor dos parâmetros `printMerchantReceipt` e `printCustomerReceipt` para executar a impressão. |
+| `printMerchantReceipt` | `Boolean` | Não | Indica se o comprovante do estabelecimento deve ser impresso ou não. O valor padrão é _false_, isto é, o comprovante não é impresso. |
+| `printCustomerReceipt` | `Boolean` | Não | Indica se o comprovante do cliente deve ser impresso ou não. O valor padrão é _false_, isto é, o comprovante não é impresso. |
+
