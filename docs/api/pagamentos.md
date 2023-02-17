@@ -16,7 +16,7 @@ Para integração com a API de pagam
 
 Passos | Sucesso | Erro
 ------------ | ------------- | -------------
-**1.Solicitação de pagamento** | O pagamento foi realizado e seu status é Pendente | O pagamento não foi realizado. A resposta contém informações do erro.. | [optional] 
+**1.Solicitação de pagamento** | O pagamento foi realizado e seu status é Pendente | O pagamento não foi realizado. A resposta contém informações do erro. | [optional] 
 **2.Resposta solicitação de pagamento** | A resposta contém informações do pagamento realizado. | A resposta contém informações do erro da solicitação. | [optional] 
 **3.Solicitação de confirmação** | Confirmação realizada, seu status é Confirmada, não pode ser desfeita.| Confirmação não realizada. A resposta contém informações do erro. | [optional] 
 **4.Resposta da confirmação** | A resposta contém informações da confirmação realizada. Impressão do Comprovante | A resposta contém informações do erro da solicitação. Nesse ponto pode ser enviado o desfazimento. | [optional] 
@@ -24,6 +24,33 @@ Passos | Sucesso | Erro
 **6.Resposta do desfazimento** | A resposta contém informações do desfazimento realizado.** | A resposta contém informações do erro da solicitação. | [optional] 
 
 O pagamento só é finalizado quando existe uma confirmação ou um cancelamento (desfazimento). Em caso de confirmação, o comprovante estará disponível para impressão ou envio por SMS/e-mail, dependendo das funcionalidades do terminal
+
+
+## Métodos
+Assinatura | Descrição
+------------------------------------------------------------------------ | ------------------------------------------------------------------------------
+**void startPaymentV2(PaymentRequestV2 paymentRequest, PaymentCallback paymentCallback)** | Realiza o processo de autorização de pagamento. | [optional] 
+**void confirmPayment(String paymentId, PaymentCallback paymentCallback)** | Confirma uma autorização de pagamento realizada anteriormente. | [optional] 
+**void cancelPayment(String paymentId, PaymentCallback paymentCallback)** | Desfaz uma autorização de pagamento realizada anteriormente. | [optional] 
+
+## startPaymentV2()
+Este método deve ser chamado quando se deseja fazer uma solicitação de autorização de pagamento. Durante sua execução, os dados do pagamento serão validados, informações adicionais serão solicitadas ao operador (e.g. senha e CVV), e a autorização junto à adquirente será feita.
+
+# Parâmetros
+Nome | Tipo | Obrigatório | Descrição 
+-----|------|-------------|----------|
+**request** |PaymentRequestV2|Sim|Objeto de transferência de dados que conterá as informações da requisição do pagamento. Note que nem todos os parâmetros são obrigatórios.
+**callback** |PaymentCallback|Sim|Interface que será executada para notificações de sucesso ou erro do processo de pagamento.
+
+### Detalhe dos Parâmetros
+request (PaymentRequestV2)
+
+Nome | Tipo | Obrigatório | Descrição 
+-----|------|-------------|----------|
+**value** |BigDecimal|Não|Valor do pagamento solicitado. Caso não seja preenchido (null), a interface solicitará o valor ao operador.
+**additionalValueType** |AdditionalValueType|Não|Tipo de valor adicional (Cashback, TIP, etc.). Se não estiver preenchido (nulo), deve-se ignorar o campo "additionalValue". ‘AdditionalValueType’ deve admitir, para FastTrack, apenas o valor CASHBACK. Depois de ler o cartão, se o AdditionalValueType informado não for compatível com produto banner do Cartão, o terminal exibe um erro na tela e finaliza a transação. Para evitar que esse erro ocorra, é recomendado usar este campo apenas junto com um "productShortName", que deve ser preenchido cmo um produto que suporta o uso do tipo de valor adicional em questão. Para pagamentos de QRCode estático não considerar este parâmetro quando operationMethodAllowed = 1
+
+
 
 [[Voltar]](./README.md)
 
