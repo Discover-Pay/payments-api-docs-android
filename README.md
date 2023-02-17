@@ -5,7 +5,7 @@
 - [Referências API](docs/api/README.md)
 
 
-## Documentação da Integração Android para pagamentos DiscoverPay
+### Documentação da Integração Android para pagamentos DiscoverPay
 
 Uma das formas de se integrar com a aplicação de pagamentos da DiscoverPay é via [**IPC**](https://developer.android.com/guide/components/aidl.html). Para isto, é fornecida uma biblioteca, a [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars), contendo todo o código necessário a ser usado para tais chamadas.
 
