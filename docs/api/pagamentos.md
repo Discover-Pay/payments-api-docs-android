@@ -69,7 +69,7 @@ Nome | Tipo | Obrigatório | Descrição
 | `operationMethodAllowed` | `Integer` | Sim | Indica o método de operação de pagamento, anulação e devolução. Admita os seguintes valores: 0 - Apenas com cartão físico (lido ou digitado); 1 - Somente com QRCode. |
 | `allowBenefit` (OBSOLETO) | `Boolean` | Não | Indica se o QRCode deve ser gerado com as opções do produto associadas aos benefícios. O valor padrão é 'verdadeiro', ou seja, os benefícios serão adicionados. |
 
-# callback (PaymentCallback)
+## callback (PaymentCallback)
 
 | Nome | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
@@ -114,7 +114,7 @@ Nome | Tipo | Obrigatório | Descrição
 | `ErrorData.acquirerAdditionalMessage` | `String` | Não | Mensagem adicional enviada pela adquirente na resposta da transação. |
 
 
-# confirmPayment()
+## confirmPayment()
 
 Este método deve ser chamado para confirmar uma transação que o terminal conseguiu processar completamente a perna de autorização enviada pelo Autorizador.
 
@@ -130,12 +130,23 @@ Caso o App consumidor desta API tenha finalizado o seu processo de negócio com 
 
 Como resultado, poderemos ter uma inconsistência transacional, visto que, na virada do dia, algumas redes adquirentes confirmam automaticamente as transações que não receberam a perna de confirmação. Outras redes adquirentes trabalham apenas com duas pernas, sem a necessidade de perna de confirmação. Neste caso, se houver algum problema na conclusão da transação no lado do terminal, é imperativo que a solução de captura execute o método **cancelPayment()**, a fim de desfazer a transação no adquirente e evitar cobrança para o cliente Portador do Cartão.
 
-# Parâmetros
+## Parâmetros
 
 | Nome | Tipo | Obrigatório | Descrição |
 | --- | --- | --- | --- |
 | `paymentId` | `String` | Sim | Identificador da transação que será confirmada. O Identificador referido é aquele utilizado na aplicação de pagamentos. |
 | `callback` | `PaymentCallback` | Sim | Interface que será executada para notificações de sucesso ou erro. |
+
+## Detalhe dos parâmetros
+#### callback
+
+| Nome | Tipo | Obrigatório | Descrição |
+| --- | --- | --- | --- |
+| **`onSuccess`** |     |     | Método para notificação em caso de sucesso |
+| **`onError`** |     |     | Método para notificação em caso de erro. |
+| `ErrorData.paymentsResponseCode` | `String` | Sim | Código de resposta para o erro ocorrido. Vide [Códigos de Resposta](../codigo_resposta/) |
+| `ErrorData.acquirerResponseCode` | `String` | Não | Código de resposta para o erro ocorrido retornado pela adquirente. Note que este erro só será retornado se a transação não for autorizada pela adquirente. |
+| `ErrorData.responseMessage` | `String` | Sim | Mensagem descritiva da causa da não autorização. Caso a transação tenha sido negada pela adquirente, conterá a mensagem retornada pela adquirente. |
 
 [[Voltar]](./README.md)
 
