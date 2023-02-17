@@ -1,2 +1,2 @@
 # payments-api-docs-android
-PayStore Android
+PayStore Android 2
