@@ -49,7 +49,12 @@ Nome | Tipo | Obrigatório | Descrição
 -----|------|-------------|----------|
 **value** |BigDecimal|Não|Valor do pagamento solicitado. Caso não seja preenchido (null), a interface solicitará o valor ao operador.
 **additionalValueType** |AdditionalValueType|Não|Tipo de valor adicional (Cashback, TIP, etc.). Se não estiver preenchido (nulo), deve-se ignorar o campo "additionalValue". ‘AdditionalValueType’ deve admitir, para FastTrack, apenas o valor CASHBACK. Depois de ler o cartão, se o AdditionalValueType informado não for compatível com produto banner do Cartão, o terminal exibe um erro na tela e finaliza a transação. Para evitar que esse erro ocorra, é recomendado usar este campo apenas junto com um "productShortName", que deve ser preenchido cmo um produto que suporta o uso do tipo de valor adicional em questão. Para pagamentos de QRCode estático não considerar este parâmetro quando operationMethodAllowed = 1
-
+**additionalValue** |BigDecimal|Não|Valor adicionado ao valor da transação. Se "additionalValueType" for relatado e "additionalValue" não foi preenchido (nulo) ou é igual a 0 (zero), a interface irá pedir ao operador o valor adicional. Se "additionalValueType" for preenchido e "additionalValue" tiver um valor mais alto do que 0 (zero), a interface não pedirá ao operador o valor adicional. Para pagamentos de QRCode estático não considerar este parâmetro quando operationMethodAllowed = 1.
+**paymentTypes** |List<PaymentType>|Não|Tipos de pagamentos (Débito, Crédito, Voucher, etc.) permitidos para este pagamento. Caso seja vazio, ou seja, null, significa que todos os tipos são permitidos. Caso contenha apenas um, este tipo será o utilizado (se possível) e não será perguntado nada ao operador. Para pagamentos de QRCode estático não considerar este parâmetro quando operationMethodAllowed = 1.
+**installments** |String|Não|Quantidade de parcelas. Usado apenas para tipos de pagamentos que suportem parcelamento e neste caso é obrigatório. Valor deve ser entre 2 e 99.
+**accountTypeId** |Integer|Não|Tipo de conta. Se não for preenchido (nulo), a interface pode perguntar ao operador o tipo de conta, dependendo da configuração do produto principal associado ao cartão usado na transação. Depois de ler o cartão, se o accountTypeId inserido não existir na cnofiguração do produto de bandeira do Cartão, o terminal exibe um erro na tela e finaliza a transação. Para evitar que esse erro ocorra, é recomendado usar este campo apenas junto com um "productShortName", onde deve constar um produto que suporta o uso do tipo de conta. Para pagamentos de QRCode estático não considerar este parâmetro quando operationMethodAllowed = 1.
+  
+  
 
 
 [[Voltar]](./README.md)
