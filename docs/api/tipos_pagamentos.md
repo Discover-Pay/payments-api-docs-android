@@ -1,4 +1,4 @@
-# Tipos de pagamentos
+# Tipos de Pagamento
 
 | Código | Nome | Descrição |
 | --- | --- | --- |
