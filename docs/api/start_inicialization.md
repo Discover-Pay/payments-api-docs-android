@@ -93,3 +93,5 @@ public class MyActivity extends Activity implements PaymentClient.PaymentCallbac
     }
 }
 ```
+
+[[Voltar]](./README.md)
