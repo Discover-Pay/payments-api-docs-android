@@ -1,7 +1,7 @@
 
 # Consulta de Pagamentos via API
 
-Uma das formas de se integrar com a aplicação de pagamentos da Phoebus é via [**IPC**](https://developer.android.com/guide/components/aidl.html). Para isto, é fornecida uma biblioteca, a [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars), contendo todo o código necessário para realizar as chamadas de integração.
+Uma das formas de se integrar com a aplicação de pagamentos da DiscoverPay é via [**IPC**](https://developer.android.com/guide/components/aidl.html). Para isto, é fornecida uma biblioteca, a [**payments-api-x.x.x.x.aar**](https://github.com/Discover-Pay/payments-api-demo-android/tree/main/app/aars), contendo todo o código necessário para realizar as chamadas de integração.
 
 Usando esta API, é possível realizar todo o fluxo de pagamento, ou seja, a confirmação (ou o desfazimento). Além disso, pode-se informar uma lista de tipos de pagamentos (débito, crédito à vista, crédito parcelado, etc.) permitidos.
 
@@ -245,3 +245,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 }
 ```
+
+## Consultar Campos Adicionais da PayStore
+A PayStore utiliza um poderoso recurso de passagem de parâmetros cadastrados no Servidor para serem utilizados pelos terminais, sem que seja necessário alterar a mensageria de Inicialização. Isso traz uma enorme flexibilidade para criação de novas funcionalidades nos apps.
+
+Os Campos Adicionais (também chamados de Parâmetros) são informações que podem ser cadastradas no Portal da PayStore, podendo ser configurados para todos os lojistas e terminais do Facilitador, para um grupo de lojistas específico, para um lojista (afeta todos os terminais daquele lojista) ou para um terminal específico. Essas informações podem ser lidas por um aplicativo através de Providers.
+
+A classe ConfigurationStoreContract é responsável por prover essas informações. Segue, abaixo, um exemplo de sua implementação:
+```java
+import android.content.ContentResolver;
+import android.content.Context;
+import android.database.Cursor;
+import android.net.Uri;
+
+import br.com.phoebus.android.payments.api.provider.ConfigurationStoreContract;
+
+public class ConfigController {
+
+  private Context context;
+
+  public ConfigController(Context context) {
+    this.context = context;
+  }
+
+  public String getProperty(String key) {
+
+    Uri.Builder uriBuilder = ConfigurationStoreContract.getUriBuilder();
+    uriBuilder.appendQueryParameter(ConfigurationStoreContract.column.KEY, key);
+    ContentResolver resolver = this.context.getContentResolver();
+
+    String value = null;
+    try (Cursor query = resolver.query(uriBuilder.build(), null, null, null, null)) {
+
+      if (query != null && query.moveToFirst()) {
+        value = query.getString(query.getColumnIndex(ConfigurationStoreContract.column.VALUE));
+      }
+    }
+    return value;
+  }
+}
+```
+```java
+    ConfigController config = new ConfigController(mContext);
+    String conteudoCampoAdicional = config.getProperty("sua_chave");
+```
+Para utilizar essa classe, basta usar a chave definida previamente nos Campos Adicionais como parâmetro, conforme abaixo:
