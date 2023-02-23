@@ -285,8 +285,9 @@ public class ConfigController {
   }
 }
 ```
+
+Para utilizar essa classe, basta usar a chave definida previamente nos Campos Adicionais como parâmetro, conforme abaixo:
 ```java
     ConfigController config = new ConfigController(mContext);
     String conteudoCampoAdicional = config.getProperty("sua_chave");
 ```
-Para utilizar essa classe, basta usar a chave definida previamente nos Campos Adicionais como parâmetro, conforme abaixo:
