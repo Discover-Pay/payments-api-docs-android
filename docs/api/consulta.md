@@ -291,3 +291,4 @@ Para utilizar essa classe, basta usar a chave definida previamente nos Campos Ad
     ConfigController config = new ConfigController(mContext);
     String conteudoCampoAdicional = config.getProperty("sua_chave");
 ```
+[[Voltar APIs]](./README.md)
