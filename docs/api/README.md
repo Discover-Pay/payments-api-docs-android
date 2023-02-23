@@ -7,5 +7,6 @@
 - [Broadcast](broadcast.md)
 - [Resposta Broadcast Fechamento de Lote](settlement_broadcast_response.md)
 - [Resposta Broadcast de Erros](error_broadcast_response.md)
+- [Realizar Inicialização](start_inicialization.md)
 
 [[Voltar]](../../README.md)
