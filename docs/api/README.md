@@ -8,5 +8,6 @@
 - [Resposta Broadcast Fechamento de Lote](settlement_broadcast_response.md)
 - [Resposta Broadcast de Erros](error_broadcast_response.md)
 - [Realizar Inicialização](start_inicialization.md)
+- [Enviar Pagamentos](start_push_payments.md)
 
 [[Voltar]](../../README.md)
