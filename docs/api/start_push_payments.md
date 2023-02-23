@@ -1,5 +1,5 @@
 # Faz o envio dos pagamentos para a Paystore
-Esse método deve ser chamado para enviar os pagamentos do terminal para a Paystore.
+Esse método deve ser chamado para enviar os pagamentos do terminal para a DiscoverPaystore.
 
 ## Métodos
 | Assinatura | Descrição |
